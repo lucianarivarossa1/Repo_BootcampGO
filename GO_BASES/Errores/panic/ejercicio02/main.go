@@ -28,11 +28,10 @@ func main() {
 		panic(err1.Error())
 		fmt.Println("error")
 	} else {
-		file.Close()
 
 	}
 	defer EstadoFinal()
-	//	CrearArchivo()
+	CrearArchivo()
 	AbrirArchivo()
 
 }

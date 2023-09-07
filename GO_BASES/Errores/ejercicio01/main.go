@@ -43,7 +43,7 @@ func main() {
 		fmt.Println("el salario no alcanza ")
 
 	}
-	//	if errors.Is(err,ErrInvalidSalaryThnTenThousand{}){
+	//if errors.Is(err,ErrInvalidSalaryThnTenThousand{}){
 	//fmt.Println("el salario no alcanza ")
 
 	//}
