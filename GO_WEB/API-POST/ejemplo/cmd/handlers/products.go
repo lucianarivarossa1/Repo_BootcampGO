@@ -42,8 +42,26 @@ type ResponseBody struct {
 	Data    *Data  ` json:"data"`
 }
 
-func (c *ControllerProducts) Save() gin.HandlerFunc {
+func (c *ControllerProducts) GetProducts() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
+
+	}
+}
+func (c *ControllerProducts) Save() gin.HandlerFunc {
+	//el gin.Context es para recibir las peticiones del cliente y para responder
+	return func(ctx *gin.Context) {
+		//REQUEST
+
+		//header
+		token := ctx.GetHeader("Authorization")
+		if token != "123" {
+			code := http.StatusUnauthorized
+			body := ResponseBody{Message: "invalid token"}
+			ctx.JSON(code, body)
+			return
+		}
+
+		//body
 		var reqBody RequestBody
 		err := ctx.ShouldBindJSON(&reqBody)
 		if err != nil {
@@ -55,6 +73,9 @@ func (c *ControllerProducts) Save() gin.HandlerFunc {
 			ctx.JSON(code, body)
 			return
 		}
+
+		//PROCESS
+		//Deserializacion
 		pr := &Product{
 			Name:     reqBody.Name,
 			Type:     reqBody.Type,
@@ -62,8 +83,12 @@ func (c *ControllerProducts) Save() gin.HandlerFunc {
 			Quantity: reqBody.Quantity,
 		}
 		pr.ID = c.lastID + 1
+		//guardar en storage
 		c.db = append(c.db, pr)
 		c.lastID++
+
+		//RESPONSE
+		//Serializacion
 		code := http.StatusCreated
 		body := ResponseBody{
 			Message: "Producto creado",
